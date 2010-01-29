@@ -1,0 +1,14 @@
+.gitignore
+Changes
+ignore.txt
+lib/Dancer/Session/Cookie.pm
+Makefile.PL
+MANIFEST
+README
+t/00-load.t
+t/01-session.t
+t/boilerplate.t
+t/logs/development.log
+t/manifest.t
+t/pod-coverage.t
+t/pod.t
