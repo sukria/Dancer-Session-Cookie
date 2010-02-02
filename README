@@ -1,11 +1,10 @@
-Dancer::Session::Cookie
-
-Encrypted cookie-based session backend for Dancer
+Dancer::Session::Cookie - encrypted cookie-based
+session backend for Dancer framework.
 
 This module implements a session engine for sessions stored entirely
-inside cookies. Usually only Q<session id> is stored in cookies and
+inside cookies. Usually only session id is stored in cookies and
 the session data itself is saved in some external storage like
-database. This module allows us to avoid using external storage at
+database. This module allows to avoid using external storage at
 all.
 
 Since we cannot trust any data provided by client in cookies, we use
