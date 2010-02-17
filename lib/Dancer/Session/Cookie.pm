@@ -14,7 +14,7 @@ use Storable     ();
 use MIME::Base64 ();
 
 use vars '$VERSION';
-$VERSION = '0.1';
+$VERSION = '0.11';
 
 # crydec
 my $CIPHER = undef;
@@ -43,21 +43,21 @@ sub retrieve {
     my ($class, $id) = @_;
 
     my $ses = eval {
-
         # 1. decrypt and deserialize $id
         my $plain_text = _decrypt($id);
 
         # 2. deserialize
         $plain_text && Storable::thaw($plain_text);
-    }
-      || $class->new();
+    };
+
+    $ses and $ses->{id} = $id;
 
     return $ses;
 }
 
 sub create {
     my $class = shift;
-    return $class->new(id => 'empty session');
+    return Dancer::Session::Cookie->new(id => 'empty session');
 }
 
 sub flush {
@@ -72,6 +72,7 @@ sub flush {
         name  => $SESSION_NAME,
         value => $cipher_text,
     );
+    $self->{id} = $cipher_text;
     return 1;
 }
 
