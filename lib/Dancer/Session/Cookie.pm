@@ -103,6 +103,7 @@ sub _decrypt {
 
     $cookie =~ tr{_*-}{=+/};
 
+    $SIG{__WARN__} = sub {};
     my ($crc32, $plain_text) = unpack "La*",
       $CIPHER->decrypt(MIME::Base64::decode($cookie));
     return $crc32 == String::CRC32::crc32($plain_text) ? $plain_text : undef;
