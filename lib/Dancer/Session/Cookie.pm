@@ -43,21 +43,21 @@ sub retrieve {
     my ($class, $id) = @_;
 
     my $ses = eval {
-
         # 1. decrypt and deserialize $id
         my $plain_text = _decrypt($id);
 
         # 2. deserialize
         $plain_text && Storable::thaw($plain_text);
-    }
-      || $class->new();
+    };
+
+    $ses and $ses->{id} = $id;
 
     return $ses;
 }
 
 sub create {
     my $class = shift;
-    return $class->new(id => 'empty session');
+    return Dancer::Session::Cookie->new(id => 'empty session');
 }
 
 sub flush {
@@ -72,6 +72,7 @@ sub flush {
         name  => $SESSION_NAME,
         value => $cipher_text,
     );
+    $self->{id} = $cipher_text;
     return 1;
 }
 
@@ -102,6 +103,7 @@ sub _decrypt {
 
     $cookie =~ tr{_*-}{=+/};
 
+    $SIG{__WARN__} = sub {};
     my ($crc32, $plain_text) = unpack "La*",
       $CIPHER->decrypt(MIME::Base64::decode($cookie));
     return $crc32 == String::CRC32::crc32($plain_text) ? $plain_text : undef;
