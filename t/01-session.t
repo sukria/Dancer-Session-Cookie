@@ -4,7 +4,6 @@ use strict;
 use warnings;
 use Dancer;
 use Dancer::ModuleLoader;
-use Dancer::Config 'setting';
 
 BEGIN { 
     plan tests => 4;
