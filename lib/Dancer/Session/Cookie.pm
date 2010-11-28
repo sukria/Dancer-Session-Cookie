@@ -14,7 +14,7 @@ use Storable     ();
 use MIME::Base64 ();
 
 use vars '$VERSION';
-$VERSION = '0.12';
+$VERSION = '0.13';
 
 # crydec
 my $CIPHER = undef;
@@ -57,7 +57,7 @@ sub retrieve {
 
 sub create {
     my $class = shift;
-    return Dancer::Session::Cookie->new(id => 'empty session');
+    return Dancer::Session::Cookie->new(id => 'empty');
 }
 
 sub flush {
@@ -118,30 +118,47 @@ __END__
 
 Dancer::Session::Cookie - Encrypted cookie-based session backend for Dancer
 
+=head1 SYNOPSIS
+
+Your F<config.yml>:
+
+    session: "cookie"
+    session_cookie_key: "this random key IS NOT very random"
+
 =head1 DESCRIPTION
 
 This module implements a session engine for sessions stored entirely
-inside cookies. Usually only B<session id> is stored in cookies and
-the session data itself is saved in some external storage like
-database. This module allows us to avoid using external storage at
+in cookies. Usually only B<session id> is stored in cookies and
+the session data itself is saved in some external storage, e.g.
+database. This module allows to avoid using external storage at
 all.
 
-Since we cannot trust any data provided by client in cookies, we use
-cryptography to ensure secrecy and integrity.
+Since server cannot trust any data returned by client in cookies, this
+module uses cryptography to ensure integrity and also secrecy. The
+data your application stores in sessions is completely protected from
+both tampering and analysis on the client-side.
 
 =head1 CONFIGURATION
 
 The setting B<session> should be set to C<cookie> in order to use this session
-engine in a Dancer application.
+engine in a Dancer application. See L<Dancer::Config>.
 
 A mandatory setting is needed as well: B<session_cookie_key>, which should
 contain a random string of at least 16 characters (shorter keys are
 not cryptographically strong using AES in CBC mode).
 
-Here is an example configuration that uses this session engine:
+Here is an example configuration to use in your F<config.yml>:
 
     session: "cookie"
     session_cookie_key: "kjsdf07234hjf0sdkflj12*&(@*jk"
+
+Compromising B<session_cookie_key> will disclose session data to
+clients and proxies or eavesdroppers and will also allow tampering,
+for example session theft. So, your F<config.yml> should be kept at
+least as secure as your database passwords or even more.
+
+Also, changing B<session_cookie_key> will have an effect of immediate
+invalidation of all sessions issued with the old value of key.
 
 =head1 DEPENDENCY
 
@@ -150,8 +167,7 @@ L<String::CRC32>, L<Storable> and L<MIME::Base64>.
 
 =head1 AUTHOR
 
-This module has been written by Alex Kapranoff, see the AUTHORS file for
-details.
+This module has been written by Alex Kapranoff.
 
 =head1 SEE ALSO
 
@@ -159,7 +175,7 @@ See L<Dancer::Session> for details about session usage in route handlers.
 
 =head1 COPYRIGHT
 
-This module is copyright (c) 2009 Alex Kapranoff <kappa@cpan.org>.
+This module is copyright (c) 2009-2010 Alex Kapranoff <kappa@cpan.org>.
 
 =head1 LICENSE
 

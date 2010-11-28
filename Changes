@@ -1,5 +1,8 @@
 Revision history for Dancer-Session-Cookie
 
+0.13    Sun Nov 28 17:19:58 MSK 2010
+		Some documentation fixes. No functional change.
+
 0.12    Thu Sep 16 13:29:09 MSD 2010
         Fix a warning when testing against newer Dancer. No functional
         change.
