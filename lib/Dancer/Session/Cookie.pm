@@ -173,6 +173,9 @@ This module has been written by Alex Kapranoff.
 
 See L<Dancer::Session> for details about session usage in route handlers.
 
+See L<Plack::Middleware::Session::Cookie>,
+L<Catalyst::Plugin::CookiedSession>, L<Mojolicious::Controller/session> for alternative implementation of this mechanism.
+
 =head1 COPYRIGHT
 
 This module is copyright (c) 2009-2010 Alex Kapranoff <kappa@cpan.org>.
