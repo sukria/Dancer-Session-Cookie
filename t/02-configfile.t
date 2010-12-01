@@ -9,7 +9,7 @@ use Dancer::ModuleLoader;
 use FindBin;
 
 BEGIN { 
-    plan tests => 11;
+    plan tests => 4;
     use_ok 'Dancer::Session::Cookie' 
 }
 
