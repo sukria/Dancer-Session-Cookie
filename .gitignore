@@ -13,3 +13,4 @@ Dancer-Session-Cookie-*
 .git*
 MANIFEST.bak
 t/logs
+MYMETA.yml
