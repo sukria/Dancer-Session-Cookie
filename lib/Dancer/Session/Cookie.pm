@@ -71,6 +71,7 @@ sub flush {
     Dancer::Cookies->cookies->{$SESSION_NAME} = Dancer::Cookie->new(
         name  => $SESSION_NAME,
         value => $cipher_text,
+        path  => setting("session_cookie_path") || "/",
     );
     $self->{id} = $cipher_text;
     return 1;
@@ -159,6 +160,9 @@ least as secure as your database passwords or even more.
 
 Also, changing B<session_cookie_key> will have an effect of immediate
 invalidation of all sessions issued with the old value of key.
+
+B<session_cookie_path> can be used to control the path of the session
+cookie.  The default is /.
 
 =head1 DEPENDENCY
 
