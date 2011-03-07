@@ -60,6 +60,14 @@ sub create {
     return Dancer::Session::Cookie->new(id => 'empty');
 }
 
+
+# session_name was introduced to Dancer::Session::Abstract in 1.176
+# we have 1.130 as the minimum
+sub session_name {
+    my $self = shift;
+    return eval { $self->SUPER::session_name } || setting("session_name") || "dancer.session";
+}
+
 sub flush {
     my $self = shift;
 
@@ -67,9 +75,9 @@ sub flush {
     delete $self->{id};
     my $cipher_text = _encrypt(Storable::freeze($self));
 
-    my $SESSION_NAME = 'dancer.session';
-    Dancer::Cookies->cookies->{$SESSION_NAME} = Dancer::Cookie->new(
-        name  => $SESSION_NAME,
+    my $session_name = $self->session_name;
+    Dancer::Cookies->cookies->{$session_name} = Dancer::Cookie->new(
+        name  => $session_name,
         value => $cipher_text,
         path  => setting("session_cookie_path") || "/",
     );
@@ -78,8 +86,8 @@ sub flush {
 }
 
 sub destroy {
-    my $SESSION_NAME = 'dancer.session';
-    delete Dancer::Cookies->cookies->{$SESSION_NAME};
+    my $self = shift;
+    delete Dancer::Cookies->cookies->{$self->session_name};
 
     return 1;
 }
