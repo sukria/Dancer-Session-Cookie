@@ -71,6 +71,7 @@ sub flush {
     Dancer::Cookies->cookies->{$SESSION_NAME} = Dancer::Cookie->new(
         name  => $SESSION_NAME,
         value => $cipher_text,
+        secure => setting("session_secure")
     );
     $self->{id} = $cipher_text;
     return 1;
@@ -159,6 +160,9 @@ least as secure as your database passwords or even more.
 
 Also, changing B<session_cookie_key> will have an effect of immediate
 invalidation of all sessions issued with the old value of key.
+
+This will honor the B<session_secure> setting and use a secure (https
+only) cookie if set.
 
 =head1 DEPENDENCY
 
