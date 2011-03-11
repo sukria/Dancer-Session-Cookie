@@ -7,7 +7,7 @@ WriteMakefile(
     AUTHOR              => q{Alex Kapranoff <kappa@cpan.org>},
     VERSION_FROM        => 'lib/Dancer/Session/Cookie.pm',
     ABSTRACT_FROM       => 'lib/Dancer/Session/Cookie.pm',
-    ($ExtUtils::MakeMaker::VERSION >= 6.55
+    ($ExtUtils::MakeMaker::VERSION >= 6.3002
       ? ('LICENSE'=> 'perl')
       : ()),
     PL_FILES            => {},
