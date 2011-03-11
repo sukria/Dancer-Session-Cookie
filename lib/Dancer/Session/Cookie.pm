@@ -80,6 +80,7 @@ sub flush {
         name  => $session_name,
         value => $cipher_text,
         path  => setting("session_cookie_path") || "/",
+        secure=> setting("session_secure"),
     );
     $self->{id} = $cipher_text;
     return 1;
@@ -171,6 +172,9 @@ invalidation of all sessions issued with the old value of key.
 
 B<session_cookie_path> can be used to control the path of the session
 cookie.  The default is /.
+
+The global B<session_secure> setting is honoured and a secure (https
+only) cookie will be used if set.
 
 =head1 DEPENDENCY
 
