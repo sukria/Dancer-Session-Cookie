@@ -8,8 +8,8 @@ use Crypt::CBC;
 use String::CRC32;
 use Crypt::Rijndael;
 
+use Dancer ();
 use Dancer::Config 'setting';
-use Dancer::ModuleLoader;
 use Storable     ();
 use MIME::Base64 ();
 
@@ -76,13 +76,13 @@ sub flush {
     my $cipher_text = _encrypt(Storable::freeze($self));
 
     my $session_name = $self->session_name;
-    Dancer::Cookies->cookies->{$session_name} = Dancer::Cookie->new(
-        name  => $session_name,
-        value => $cipher_text,
+    Dancer::set_cookie(
+        $session_name   => $cipher_text,
         path  => setting("session_cookie_path") || "/",
         secure=> setting("session_secure"),
     );
     $self->{id} = $cipher_text;
+
     return 1;
 }
 
