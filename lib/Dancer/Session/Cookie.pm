@@ -14,7 +14,7 @@ use Storable     ();
 use MIME::Base64 ();
 
 use vars '$VERSION';
-$VERSION = '0.13';
+$VERSION = '0.14';
 
 # crydec
 my $CIPHER = undef;
