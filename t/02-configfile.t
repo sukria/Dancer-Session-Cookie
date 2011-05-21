@@ -9,6 +9,9 @@ use Dancer::ModuleLoader;
 use FindBin;
 use File::Spec;
 
+eval "use YAML";
+plan skip_all => "YAML is needed for this test" if $@;
+
 BEGIN { 
     plan tests => 4;
     use_ok 'Dancer::Session::Cookie' 
