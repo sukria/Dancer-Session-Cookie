@@ -1,5 +1,11 @@
 Revision history for Dancer-Session-Cookie
 
+0.15	2011-05-21
+
+    * skip test 02-configfile.t if YAML is not present
+      FIX smoker test failure.
+      (Alexis Sukrieh)
+
 0.14	2011-03-12
     
 	[ Michael G. Schwern ]
