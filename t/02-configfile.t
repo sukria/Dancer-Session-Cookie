@@ -6,16 +6,14 @@ use strict;
 use warnings;
 use Dancer;
 use Dancer::ModuleLoader;
+use Dancer::Session::Cookie;
 use FindBin;
 use File::Spec;
 
 eval "use YAML";
 plan skip_all => "YAML is needed for this test" if $@;
 
-BEGIN { 
-    plan tests => 4;
-    use_ok 'Dancer::Session::Cookie' 
-}
+plan tests => 3;
 
 my $session;
 
