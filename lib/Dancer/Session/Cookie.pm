@@ -14,7 +14,7 @@ use Storable     ();
 use MIME::Base64 ();
 
 use vars '$VERSION';
-$VERSION = '0.13';
+$VERSION = '0.15';
 
 # crydec
 my $CIPHER = undef;
@@ -194,7 +194,7 @@ L<Catalyst::Plugin::CookiedSession>, L<Mojolicious::Controller/session> for alte
 
 =head1 COPYRIGHT
 
-This module is copyright (c) 2009-2010 Alex Kapranoff <kappa@cpan.org>.
+This module is copyright (c) 2009-2011 Alex Kapranoff <kappa@cpan.org>.
 
 =head1 LICENSE
 

@@ -1,5 +1,9 @@
 Revision history for Dancer-Session-Cookie
 
+0.15	Fri Mar 11 13:58:56 MSK 2011
+		New setting session_cookie_path.
+		Support global settings session_name and session_secure.
+
 0.13    Sun Nov 28 17:19:58 MSK 2010
 		Some documentation fixes. No functional change.
 
