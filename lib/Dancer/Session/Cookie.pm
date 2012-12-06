@@ -88,7 +88,13 @@ sub flush {
 
 sub destroy {
     my $self = shift;
-    delete Dancer::Cookies->cookies->{$self->session_name};
+
+    my $session_name = $self->session_name;
+    Dancer::set_cookie(
+        $session_name   => "empty",
+        path  => setting("session_cookie_path") || "/",
+        secure=> setting("session_secure"),
+    );
 
     return 1;
 }

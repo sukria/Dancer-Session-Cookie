@@ -40,6 +40,10 @@ test_tcp(
         $ua->cookie_jar($jars[0]);
         my $res = $ua->get("http://0.0:$port/wibble");
         is $res->content, "hits: 3, last_hit: baz", "session not overwritten";
+
+        $res = $ua->get("http://0.0:$port/clear");
+        is $res->content, "hits: 0, last_hit: ", "session destroyed";
+
     },
     server => sub {
         my $port = shift;
@@ -52,6 +56,12 @@ test_tcp(
 
         set session_cookie_key  => "John has a long mustache";
         set session             => "cookie";
+
+        get "/clear" => sub {
+            session "useless" =>  1; # force write/flush
+            session->destroy;
+            redirect '/postclear';
+        };
 
         get "/*" => sub {
             my $hits = session("hit_counter") || 0;
