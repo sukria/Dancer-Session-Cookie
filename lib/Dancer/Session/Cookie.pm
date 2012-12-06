@@ -75,22 +75,49 @@ sub flush {
     delete $self->{id};
     my $cipher_text = _encrypt(Storable::freeze($self));
 
-    my $session_name = $self->session_name;
-    Dancer::set_cookie(
-        $session_name   => $cipher_text,
-        path  => setting("session_cookie_path") || "/",
-        secure=> setting("session_secure"),
-    );
-    $self->{id} = $cipher_text;
+    # 2. write it into the cookie session ID
+    $self->write_session_id( $self->{id} = $cipher_text );
 
     return 1;
 }
 
 sub destroy {
     my $self = shift;
-    delete Dancer::Cookies->cookies->{$self->session_name};
+
+    # 1. clear session data
+    %$self = ();
+
+    # 2. set dummy session ID and write it to the cookie to clear browser-side
+    $self->{id} = 'empty';
+    $self->write_session_id;
 
     return 1;
+}
+
+# Copied from Dancer::Session::Abstract and modified to add support
+# for session_cookie_path
+sub write_session_id {
+    my ($class, $id) = @_;
+
+    my $name = session_name();
+    my %cookie = (
+        name   => $name,
+        value  => $id,
+        path   => setting('session_cookie_path') || '/',
+        domain => setting('session_domain'),
+        secure => setting('session_secure'),
+        http_only => defined(setting("session_is_http_only")) ?
+                     setting("session_is_http_only") : 1,
+    );
+    if (my $expires = setting('session_expires')) {
+        # It's # of seconds from the current time
+        # Otherwise just feed it through.
+        $expires = Dancer::Cookie::_epoch_to_gmtstring(time + $expires) if $expires =~ /^\d+$/;
+        $cookie{expires} = $expires;
+    }
+
+    my $c = Dancer::Cookie->new(%cookie);
+    Dancer::Cookies->set_cookie_object($name => $c);
 }
 
 sub _encrypt {

@@ -1,5 +1,8 @@
 Revision history for Dancer-Session-Cookie
 
+    * Fix session destruction bug to ensure session is overwritten in
+      the browser, not just no longer sent (David Golden)
+
 0.15	2011-05-21
 
     * skip test 02-configfile.t if YAML is not present
